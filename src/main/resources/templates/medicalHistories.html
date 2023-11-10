@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Истории болезни</title>
+    <style>
+        h1 {
+            color: #007bff; /* Синий цвет заголовка */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; /* Светло-серый фон для заголовков */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Светло-серый фон для четных строк */
+        }
+        tr:nth-child(odd) {
+            background-color: #fff; /* Белый фон для нечетных строк */
+        }
+    </style>
+</head>
+<body>
+<h1>Список историй болезни</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Диагноз</th>
+        <th>Описание</th>
+        <th>Питомец</th>
+    </tr>
+    <tr th:each="medicalHistory : ${medicalHistories}">
+        <td th:text="${medicalHistory.id}">ID</td>
+        <td th:text="${medicalHistory.diagnosis}">Диагноз</td>
+        <td th:text="${medicalHistory.description}">Описание</td>
+        <td th:text="${medicalHistory.pet.getName()}">Питомец</td>
+
+    </tr>
+</table>
+<form th:action="@{/veterinary_clinic/medical_histories/add}" method="post" th:object="${newMedicalHistory}">
+    <h2 style="color: #007bff;">Добавить новую историю болезни</h2>
+    <div style="margin-bottom: 10px;">
+        <label for="diagnosis" style="font-weight: bold;">Диагноз:</label>
+        <input type="text" id="diagnosis" name="diagnosis" th:field="*{diagnosis}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="description" style="font-weight: bold;">Описание:</label>
+        <input type="text" id="description" name="description" th:field="*{description}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="pet" style="font-weight: bold;">Питомец:</label>
+        <select id="pet" name="pet.id" th:field="*{pet.id}" required>
+            <option th:each="pet : ${pets}" th:value="${pet.id}" th:text="${pet.name}"></option>
+        </select>
+    </div>
+    <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">Добавить историю болезни</button>
+</form>
+</body>
+</html>

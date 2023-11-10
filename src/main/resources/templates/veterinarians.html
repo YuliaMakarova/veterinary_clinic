@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ветеринары</title>
+    <style>
+        h1 {
+            color: #007bff; /* Синий цвет заголовка */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; /* Светло-серый фон для заголовков */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Светло-серый фон для четных строк */
+        }
+        tr:nth-child(odd) {
+            background-color: #fff; /* Белый фон для нечетных строк */
+        }
+    </style>
+</head>
+<body>
+<h1>Список ветеринаров</h1>
+ <table>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Специализация</th>
+    </tr>
+    <tr th:each="veterinarian : ${veterinarians}">
+        <td th:text="${veterinarian.id}">ID</td>
+        <td th:text="${veterinarian.name}">Имя</td>
+        <td th:text="${veterinarian.specialization}">Специализация</td>
+    </tr>
+</table>
+<form th:action="@{/veterinary_clinic/veterinarians/add}" method="post" th:object="${newVeterinarian}">
+    <h2 style="color: #007bff;">Добавить нового ветеринара</h2>
+    <div style="margin-bottom: 10px;">
+        <label for="name" style="font-weight: bold;">Имя:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="specialization" style="font-weight: bold;">Специализация:</label>
+        <input type="text" id="specialization" name="specialization" th:field="*{specialization}" required>
+    </div>
+    <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">Добавить ветеринара</button>
+</form>
+</body>
+</html>

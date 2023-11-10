@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Питомцы</title>
+    <style>
+        h1 {
+            color: #007bff; /* Синий цвет заголовка */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; /* Светло-серый фон для заголовков */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Светло-серый фон для четных строк */
+        }
+        tr:nth-child(odd) {
+            background-color: #fff; /* Белый фон для нечетных строк */
+        }
+    </style>
+</head>
+<body>
+<h1>Список питомцев</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Возраст</th>
+        <th>Вид</th>
+        <th>Ветеринар</th>
+    </tr>
+    <tr th:each="pet : ${pets}">
+        <td th:text="${pet.id}">ID</td>
+        <td th:text="${pet.name}">Имя</td>
+        <td th:text="${pet.age}">Возраст</td>
+        <td th:text="${pet.species}">Вид</td>
+        <td th:text="${pet.veterinarian.getName()}">Ветеринар</td>
+
+    </tr>
+</table>
+<form th:action="@{/veterinary_clinic/pets/add}" method="post" th:object="${newPet}">
+    <h2 style="color: #007bff;">Добавить нового питомца</h2>
+    <div style="margin-bottom: 10px;">
+        <label for="name" style="font-weight: bold;">Имя:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="age" style="font-weight: bold;">Возраст:</label>
+        <input type="number" id="age" name="age" th:field="*{age}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="species" style="font-weight: bold;">Вид:</label>
+        <input type="text" id="species" name="species" th:field="*{species}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="veterinarian" style="font-weight: bold;">Ветеринар:</label>
+        <select id="veterinarian" name="veterinarian.id" th:field="*{veterinarian.id}" required>
+            <option th:each="vet : ${veterinarians}" th:value="${vet.id}" th:text="${vet.name}"></option>
+        </select>
+    </div>
+    <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">Добавить питомца</button>
+</form>
+</body>
+</html>

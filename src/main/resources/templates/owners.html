@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Хозяева</title>
+    <style>
+        h1 {
+            color: #007bff; /* Синий цвет заголовка */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; /* Светло-серый фон для заголовков */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Светло-серый фон для четных строк */
+        }
+        tr:nth-child(odd) {
+            background-color: #fff; /* Белый фон для нечетных строк */
+        }
+    </style>
+</head>
+<body>
+<h1>Список хозяев</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Номер телефона</th>
+        <th>Питомцы</th>
+    </tr>
+    <tr th:each="owner : ${owners}">
+        <td th:text="${owner.id}">ID</td>
+        <td th:text="${owner.name}">Имя</td>
+        <td th:text="${owner.phone}">Номер телефона</td>
+        <td>
+    <span th:each="pet, iterStat : ${owner.pets}">
+        <span th:text="${pet.name}"></span>
+        <span th:if="${!iterStat.last}">, </span>
+    </span>
+        </td>
+    </tr>
+</table>
+<form th:action="@{/veterinary_clinic/owners/add}" method="post" th:object="${newOwner}">
+    <h2 style="color: #007bff;">Добавить хозяина</h2>
+    <div style="margin-bottom: 10px;">
+        <label for="name" style="font-weight: bold;">Имя:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="phone" style="font-weight: bold;">Номер телефона:</label>
+        <input type="text" id="phone" name="phone" th:field="*{phone}" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <label for="pets" style="font-weight: bold;">Питомцы:</label>
+        <select id="pets" name="pets" th:field="*{pets}" required multiple>
+            <option th:each="p : ${pets}" th:value="${p.id}" th:text="${p.name}"></option>
+        </select>
+    </div>
+    <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">Добавить хозяина</button>
+</form>
+</body>
+</html>
